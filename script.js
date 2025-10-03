@@ -1,4 +1,4 @@
-[
+const questions = [
     {
         "question": "What built-in method adds one or more elements to the end of an array and returns the new length?",
         "option1": "last()",
@@ -118,32 +118,9 @@
         "option3": "document.getElementById('myID')",
         "option4": "document.getElementByTag('div')",
         "answer": "document.getElementById('myID')"
-    },
-    {
-        "question": "In an event handler function, what object contains information about the event that just occurred (e.g., target element, mouse coordinates)?",
-        "option1": "The window object",
-        "option2": "The this keyword",
-        "option3": "The event object",
-        "option4": "The document object",
-        "answer": "The event object"
-    },
-    {
-        "question": "What is the special method that is automatically called when a new instance of a class is created using the `new` keyword?",
-        "option1": "init()",
-        "option2": "start()",
-        "option3": "create()",
-        "option4": "constructor()",
-        "answer": "constructor()"
-    },
-    {
-        "question": "Which character is used to wrap a **Template Literal** (allowing for embedded expressions)?",
-        "option1": "Single quote ('')",
-        "option2": "Double quote (\" \")",
-        "option3": "Backtick (`` ` ``)",
-        "option4": "Forward slash (/)",
-        "answer": "Backtick (`` ` ``)"
     }
-]
+];
+
 let mainContainer = document.getElementById("mainContainer");
 let question = document.getElementById("question");
 let option1 = document.getElementById("option1");
@@ -151,5 +128,52 @@ let option2 = document.getElementById("option2");
 let option3 = document.getElementById("option3");
 let option4 = document.getElementById("option4");
 let score = document.getElementById("score");
+let currentQuestionNo = document.getElementById("currentQuestionNo");
+
+let currentQuestion = 0;
+let totalQuestion = questions.length;
+
+
+function displayScore() {
+
+}
+
+function loadNextQuestion() {
+    let selectedOption = document.querySelector('input[type = radio]: checked');
+
+    if (currentQuestion >= totalQuestion - 1) {
+        if (!selectedOption) {
+            alert("Please select an option");
+        }
+        currentQuestion++;
+        displayScore();
+        return;
+    }
+    if (selectedOption) {
+        selectedOption.checked = false;
+    }
+
+}
+
+function loadPreviousQuestion() {
+    currentQuestion--;
+    if (currentQuestion < 0) {
+        return;
+    }
+    else {
+        loadQuestion(currentQuestion);
+    }
+}
+function loadQuestion(index) {
+    var data = questions[index];
+    question.textContent = data.question;
+    currentQuestionNo.textContent = index + 1;
+    option1.textContent = data.option1;
+    option2.textContent = data.option2;
+    option3.textContent = data.option3;
+    option4.textContent = data.option4;
+}
+
+loadQuestion(currentQuestion);
 
 
