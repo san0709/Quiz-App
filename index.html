@@ -15,21 +15,21 @@
             No: <span id="currentQuestionNo"></span> of <span id="lastQuestion"></span>
         </div>
         <div id="question"></div>
-        <div class="option">
-            <div id="option1"></div>
-            <div id="option2"></div>
-            <div id="option3"></div>
-            <div id="option4"></div>
-        </div>
+        <ol type="a" class="option">
+            <li id="option1"></li>
+            <li id="option2"></li>
+            <li id="option3"></li>
+            <li id="option4"></li>
+        </ol>
         <div class="button">
-            <button
-             type="button" onclick="loadPreviousQuestion()">Back</button>
+            <button type="button" onclick="loadPreviousQuestion()">Back</button>
             <button id="next" type="button" onclick="checkOption()">Next</button>
         </div>
     </div>
 
 
-    <div id="score" class="container score">
+    <div id="score" class="container none">
+        <button>Reset</button>
     </div>
 
     <script src="script.js"></script>

@@ -135,13 +135,15 @@ let totalQuestion = questions.length;
 let marks = 0;
 
 function displayScore() {
-    console.log("your score : ")
+    score.innerHTML = `
+        <h2>Your Score is: ${marks} / ${totalQuestion}</h2>
+        <button class="reset" onclick="window.location.reload()">Reset</button>`;
+    score.classList.remove("none");
+    mainContainer.classList.add("none");
 }
 
 function checkOption() {
-    if (currentQuestion === totalQuestion) {
-        let next = document.getElementById("next");
-        next.textContent = "Submit";
+    if (currentQuestion === totalQuestion - 1) {
         displayScore();
     }
     else {
@@ -171,7 +173,26 @@ function loadQuestion(index) {
     option3.textContent = data.option3;
     option4.textContent = data.option4;
 
+    if (index === totalQuestion - 1) {
+        let next = document.getElementById("next");
+        next.textContent = "Submit";
+    }
+
 }
+option1.addEventListener('click', function userAnswer() {
+    console.log("user selected  option1")
+    option1.classList.add("selected");
+
+});
+option2.addEventListener('click', function userAnswer() {
+    console.log("user selected  option2")
+});
+option3.addEventListener('click', function userAnswer() {
+    console.log("user selected  option3")
+});
+option4.addEventListener('click', function userAnswer() {
+    console.log("user selected  option4")
+});
 
 loadQuestion(currentQuestion);
 
