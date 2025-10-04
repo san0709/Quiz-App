@@ -129,30 +129,30 @@ let option3 = document.getElementById("option3");
 let option4 = document.getElementById("option4");
 let score = document.getElementById("score");
 let currentQuestionNo = document.getElementById("currentQuestionNo");
-
+let lastQuestion = document.getElementById("lastQuestion");
 let currentQuestion = 0;
 let totalQuestion = questions.length;
 
-
 function displayScore() {
-
+    console.log("your score : ")
 }
 
+
 function loadNextQuestion() {
-    let selectedOption = document.querySelector('input[type = radio]: checked');
 
-    if (currentQuestion >= totalQuestion - 1) {
-        if (!selectedOption) {
-            alert("Please select an option");
-        }
-        currentQuestion++;
+    currentQuestion++;
+    if (currentQuestion === totalQuestion) {
+        let next = document.getElementById("next");
+        next.textContent = "Submit";
+        alert("Quiz finished");
+    }
+    else if (currentQuestion > totalQuestion) {
         displayScore();
-        return;
     }
-    if (selectedOption) {
-        selectedOption.checked = false;
-    }
+    else {
+        loadQuestion(currentQuestion);
 
+    }
 }
 
 function loadPreviousQuestion() {
@@ -165,6 +165,10 @@ function loadPreviousQuestion() {
     }
 }
 function loadQuestion(index) {
+    if (index === totalQuestion) {
+        return;
+    }
+    lastQuestion.textContent = totalQuestion;
     var data = questions[index];
     question.textContent = data.question;
     currentQuestionNo.textContent = index + 1;
@@ -172,6 +176,7 @@ function loadQuestion(index) {
     option2.textContent = data.option2;
     option3.textContent = data.option3;
     option4.textContent = data.option4;
+
 }
 
 loadQuestion(currentQuestion);
