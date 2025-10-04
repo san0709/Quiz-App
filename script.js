@@ -132,24 +132,31 @@ let currentQuestionNo = document.getElementById("currentQuestionNo");
 let lastQuestion = document.getElementById("lastQuestion");
 let currentQuestion = 0;
 let totalQuestion = questions.length;
+let marks = 0;
 
 function displayScore() {
     console.log("your score : ")
 }
 
-
-function loadNextQuestion() {
-
-    currentQuestion++;
+function checkOption() {
+    let selectOption = document.querySelector('#mainContainer input[type="radio"]:checked');
+    let userChoice = selectOption.value
+    if (!selectOption) {
+        alert("Please select an option!!");
+        return;
+    }
     if (currentQuestion === totalQuestion) {
         let next = document.getElementById("next");
         next.textContent = "Submit";
         alert("Quiz finished");
+        displayScore();
     }
     else if (currentQuestion > totalQuestion) {
         displayScore();
+        currentQuestion = 15;
     }
     else {
+        currentQuestion++;
         loadQuestion(currentQuestion);
 
     }
@@ -168,6 +175,8 @@ function loadQuestion(index) {
     if (index === totalQuestion) {
         return;
     }
+    let radioButtons = document.querySelectorAll('input[type="radio"][name="radio"]');
+    radioButtons.forEach(radio => radio.checked = false);
     lastQuestion.textContent = totalQuestion;
     var data = questions[index];
     question.textContent = data.question;

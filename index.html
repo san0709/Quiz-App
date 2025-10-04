@@ -11,16 +11,20 @@
 <body>
 
     <div id="mainContainer" class="container">
-        <div>No: <span id="currentQuestionNo"></span> of <span id="lastQuestion"></span></div>
+        <div class="question-tracker">
+            No: <span id="currentQuestionNo"></span> of <span id="lastQuestion"></span>
+        </div>
         <div id="question"></div>
         <div class="option">
-            <label class="option-label"> <input type="radio" name="radio"><span id="option1"></span></label>
-            <label class="option-label"> <input type="radio" name="radio"><span id="option2"></span></label>
-            <label class="option-label"> <input type="radio" name="radio"><span id="option3"></span></label>
-            <label class="option-label"> <input type="radio" name="radio"><span id="option4"></span></label>
+            <div id="option1"></div>
+            <div id="option2"></div>
+            <div id="option3"></div>
+            <div id="option4"></div>
         </div>
-        <button type="button" onclick="loadPreviousQuestion()">Previous</button>
-        <button id="next" type="button" onclick="loadNextQuestion()">Next</button>
+        <div class="button">
+            <button type="button" onclick="loadPreviousQuestion()">Back</button>
+            <button id="next" type="button" onclick="checkOption()">Next</button>
+        </div>
     </div>
 
 
