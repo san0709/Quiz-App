@@ -131,7 +131,7 @@ const scoreEl = document.getElementById("score");
 const currentQuestionNoEl = document.getElementById("currentQuestionNo");
 const lastQuestionEl = document.getElementById("lastQuestion");
 const nextBtn = document.getElementById("next");
-const backBtn = document.getElementById("back"); 
+const backBtn = document.getElementById("back");
 const optionsContainer = document.getElementById("optionsContainer");
 const optionEls = optionsContainer ? optionsContainer.querySelectorAll('li') : [];
 const option1El = document.getElementById("option1");
@@ -170,7 +170,7 @@ function calculateFinalScore() {
 function validateAndMove() {
     const selectedOption = optionsContainer.querySelector('.selected');
 
-\    if (!selectedOption) {
+    if (!selectedOption) {
         alert("Please select an option before moving to the next question.");
         return;
     }
