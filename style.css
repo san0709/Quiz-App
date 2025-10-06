@@ -79,5 +79,6 @@ body {
 }
 
 .selected {
-    background-color: green;
+    color: #2d545e;
+    background-color: #FFFFFF;
 }

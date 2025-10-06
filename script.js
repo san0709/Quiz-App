@@ -1,3 +1,6 @@
+// ==========================================================
+// 1. QUESTION DATA
+// ==========================================================
 const questions = [
     {
         "question": "What built-in method adds one or more elements to the end of an array and returns the new length?",
@@ -121,79 +124,137 @@ const questions = [
     }
 ];
 
-let mainContainer = document.getElementById("mainContainer");
-let question = document.getElementById("question");
-let option1 = document.getElementById("option1");
-let option2 = document.getElementById("option2");
-let option3 = document.getElementById("option3");
-let option4 = document.getElementById("option4");
-let score = document.getElementById("score");
-let currentQuestionNo = document.getElementById("currentQuestionNo");
-let lastQuestion = document.getElementById("lastQuestion");
-let currentQuestion = 0;
-let totalQuestion = questions.length;
+
+const mainContainer = document.getElementById("mainContainer");
+const questionEl = document.getElementById("question");
+const scoreEl = document.getElementById("score");
+const currentQuestionNoEl = document.getElementById("currentQuestionNo");
+const lastQuestionEl = document.getElementById("lastQuestion");
+const nextBtn = document.getElementById("next");
+const backBtn = document.getElementById("back"); 
+const optionsContainer = document.getElementById("optionsContainer");
+const optionEls = optionsContainer ? optionsContainer.querySelectorAll('li') : [];
+const option1El = document.getElementById("option1");
+const option2El = document.getElementById("option2");
+const option3El = document.getElementById("option3");
+const option4El = document.getElementById("option4");
+
+let currentQuestionIndex = 0;
+const totalQuestion = questions.length;
 let marks = 0;
+const userAnswers = new Array(totalQuestion).fill(null);
+
+
+// ==========================================================
+// 3. CORE LOGIC FUNCTIONS
+// ==========================================================
 
 function displayScore() {
-    score.innerHTML = `
+    scoreEl.innerHTML = `
         <h2>Your Score is: ${marks} / ${totalQuestion}</h2>
         <button class="reset" onclick="window.location.reload()">Reset</button>`;
-    score.classList.remove("none");
+    scoreEl.classList.remove("none");
     mainContainer.classList.add("none");
 }
 
-function checkOption() {
-    if (currentQuestion === totalQuestion - 1) {
+function calculateFinalScore() {
+    marks = 0;
+    for (let i = 0; i < totalQuestion; i++) {
+        if (userAnswers[i] && userAnswers[i] === questions[i].answer) {
+            marks++;
+        }
+    }
+}
+
+// Function executed when 'Next' or 'Submit' is clicked (The new checkOption)
+function validateAndMove() {
+    const selectedOption = optionsContainer.querySelector('.selected');
+
+\    if (!selectedOption) {
+        alert("Please select an option before moving to the next question.");
+        return;
+    }
+
+    // Move to the next question or submit
+    if (currentQuestionIndex === totalQuestion - 1) {
+        calculateFinalScore();
         displayScore();
     }
     else {
-        currentQuestion++;
-        loadQuestion(currentQuestion);
+        currentQuestionIndex++;
+        loadQuestion(currentQuestionIndex);
     }
 }
+
 function loadPreviousQuestion() {
-    currentQuestion--;
-    if (currentQuestion < 0) {
+    currentQuestionIndex--;
+    if (currentQuestionIndex < 0) {
+        currentQuestionIndex = 0;
         return;
     }
-    else {
-        loadQuestion(currentQuestion);
-    }
+    loadQuestion(currentQuestionIndex);
 }
+
+// Loads the question and options into the DOM
 function loadQuestion(index) {
-    if (index === totalQuestion) {
+    if (index >= totalQuestion || index < 0) {
         return;
     }
-    lastQuestion.textContent = totalQuestion;
-    var data = questions[index];
-    question.textContent = data.question;
-    currentQuestionNo.textContent = index + 1;
-    option1.textContent = data.option1;
-    option2.textContent = data.option2;
-    option3.textContent = data.option3;
-    option4.textContent = data.option4;
 
-    if (index === totalQuestion - 1) {
-        let next = document.getElementById("next");
-        next.textContent = "Submit";
+    // 1. Update question count
+    lastQuestionEl.textContent = totalQuestion;
+    const data = questions[index];
+    questionEl.textContent = data.question;
+    currentQuestionNoEl.textContent = index + 1;
+
+    // 2. Update option text content
+    option1El.textContent = data.option1;
+    option2El.textContent = data.option2;
+    option3El.textContent = data.option3;
+    option4El.textContent = data.option4;
+
+    // 3. Clear existing highlight and apply highlight for stored answer
+    optionEls.forEach(option => option.classList.remove("selected"));
+
+    const previousAnswerText = userAnswers[index];
+    if (previousAnswerText) {
+        // Find the matching option element and apply the highlight
+        optionEls.forEach(option => {
+            if (option.textContent.trim() === previousAnswerText.trim()) {
+                option.classList.add("selected");
+            }
+        });
     }
 
+    // 4. Update 'Next' button text
+    if (index === totalQuestion - 1) {
+        nextBtn.textContent = "Submit";
+    } else {
+        nextBtn.textContent = "Next";
+    }
 }
-option1.addEventListener('click', function userAnswer() {
-    console.log("user selected  option1")
-    option1.classList.add("selected");
-
-});
-option2.addEventListener('click', function userAnswer() {
-    console.log("user selected  option2")
-});
-option3.addEventListener('click', function userAnswer() {
-    console.log("user selected  option3")
-});
-option4.addEventListener('click', function userAnswer() {
-    console.log("user selected  option4")
-});
-
-loadQuestion(currentQuestion);
 
 
+// ==========================================================
+// 4. EVENT LISTENERS (Attached once on load)
+// ==========================================================
+
+// Listener for Option Selection (Single Selection Enforcement)
+optionEls.forEach(option => {
+    option.addEventListener('click', function selectOption() {
+        optionEls.forEach(opt => opt.classList.remove("selected"));
+        option.classList.add("selected");
+        userAnswers[currentQuestionIndex] = option.textContent.trim();
+    });
+});
+
+// Listener for Navigation Buttons
+if (nextBtn) {
+    nextBtn.onclick = validateAndMove;
+}
+if (backBtn) {
+    backBtn.onclick = loadPreviousQuestion;
+}
+
+// Initial load of the first question
+loadQuestion(currentQuestionIndex);
